@@ -43,17 +43,17 @@ This project utilizes a wide range of industry-standard technologies to mirror a
 The complete end-to-end deployment process is documented in a modular, step-by-step format. Each file below is a detailed runbook for a specific component.
 
 *   **Infrastructure & Setup**
-    *   [01 - Frontend (Nginx)](./Manual-Deployment/01-Web-Server.md)
-    *   [02 - MongoDB](./Manual-Deployment/02-Mongodb.md)
-    *   [03 - Catalogue Service](./Manual-Deployment/03-Catalogue.md)
-    *   [04 - Redis](./Manual-Deployment/04-Redis.md) <!-- Edit this to add ✔️ when you are done with the content -->
-    *   [05 - User Service](./Manual-Deployment/05-User.md)
-    *   [06 - Cart Service](./Manual-Deployment/06-Cart.md) <!-- Placeholder for next service -->
-    *   [07 - MySQL](./Manual-Deployment/07-MySQL.md) <!-- Placeholder for next service -->
-    *   [08 - Shipping Service](./Manual-Deployment/08-Shipping.md) <!-- Placeholder for next service -->
-    *   [09 - RabbitMQ](./Manual-Deployment/09-RabbitMQ.md) <!-- Placeholder for next service -->
-    *   [10 - Payment](./Manual-Deployment/10-Payment.md) <!-- Placeholder for next service -->
-    *   [11 - Dispatch](./Manual-Deployment/11-Dispatch.md) <!-- Placeholder for next service -->
+    *   [01 - Frontend (Nginx)](./RoboShop-Manual-Deployment/01-Web-Server.md)
+    *   [02 - MongoDB](./RoboShop-Manual-Deployment/02-Mongodb.md)
+    *   [03 - Catalogue Service](./RoboShop-Manual-Deployment/03-Catalogue.md)
+    *   [04 - Redis](./RoboShop-Manual-Deployment/04-Redis.md) <!-- Edit this to add ✔️ when you are done with the content -->
+    *   [05 - User Service](./RoboShop-Manual-Deployment/05-User.md)
+    *   [06 - Cart Service](./RoboShop-Manual-Deployment/06-Cart.md) <!-- Placeholder for next service -->
+    *   [07 - MySQL](./RoboShop-Manual-Deployment/07-MySQL.md) <!-- Placeholder for next service -->
+    *   [08 - Shipping Service](./RoboShop-Manual-Deployment/08-Shipping.md) <!-- Placeholder for next service -->
+    *   [09 - RabbitMQ](./RoboShop-Manual-Deployment/09-RabbitMQ.md) <!-- Placeholder for next service -->
+    *   [10 - Payment](./RoboShop-Manual-Deployment/10-Payment.md) <!-- Placeholder for next service -->
+    *   [11 - Dispatch](./RoboShop-Manual-Deployment/11-Dispatch.md) <!-- Placeholder for next service -->
 
 
 ---
