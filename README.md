@@ -1,6 +1,6 @@
 <!-- 
 =================================================================================
-!!! HELLO! THIS IS YOUR README TEMPLATE !!!
+!!! HELLO! THIS IS YOUR FINAL README TEMPLATE FOR THE MANUAL DEPLOYMENT !!!
 Fill in the sections below. The comments like this one will not be visible in the
 final rendered README.
 =================================================================================
@@ -8,7 +8,7 @@ final rendered README.
 
 <h1 align="center">RoboShop: A DevOps End-to-End Deployment Project</h1>
 <p align="center">
-  <em>A comprehensive portfolio project demonstrating the manual and automated deployment of a polyglot microservices e-commerce application onto AWS.</em>
+  <em>A comprehensive portfolio project demonstrating the meticulous manual deployment of a polyglot microservices e-commerce application onto AWS.</em>
 </p>
 
 <!-- Badges are a great way to show off! Go to shields.io to create your own. -->
@@ -27,7 +27,7 @@ final rendered README.
 
 ## 1. Project Overview
 
-This project is a hands-on implementation of deploying a full-stack, microservices-based e-commerce application named **RoboShop**. The primary goal is to demonstrate a deep, practical understanding of core DevOps principles, including infrastructure setup, configuration management, service deployment, and inter-service communication in a cloud environment. The project is documented in two main phases: a meticulous **Manual Deployment** and a subsequent **Automated Deployment**.
+This project is a hands-on implementation of deploying a full-stack, microservices-based e-commerce application named **RoboShop**. The primary goal is to demonstrate a deep, practical understanding of core DevOps principles, including infrastructure setup, configuration management, service deployment, and inter-service communication through a meticulous **Manual Deployment** in a cloud environment.
 
 ## 2. Live Demo
 
@@ -75,7 +75,7 @@ Create your architecture diagram!
 
 ## 5. Project Structure
 
-A clean and organized repository structure.
+A clean and organized repository structure for the manual deployment documentation.
 
 ```roboshop-project/
 ├── docs/
@@ -84,19 +84,16 @@ A clean and organized repository structure.
 │   └── gifs/
 │       └── roboshop-demo.gif
 ├── MANUAL_DEPLOYMENT.md        <-- You Are Here
-├── automated-deployment/       <-- (Optional Future Section)
-│   ├── ansible-playbooks/
-│   └── terraform-manifests/
 └── README.md
 ```
 
 ## 6. How To Use This Documentation
 
-This project contains highly detailed deployment documentation. The best place to start is with the manual deployment guide.
+This project contains a highly detailed deployment runbook. The best place to start is with the complete manual deployment guide.
 
 ➡️ **[View the Complete Manual Deployment Guide](./MANUAL_DEPLOYMENT.md)**
 
-This guide contains the step-by-step commands and configurations for every single service, from the network setup to the final application verification.
+This guide contains the step-by-step commands, configurations, and troubleshooting steps for every single service, from the network setup to the final application verification.
 
 ## 7. What I Learned
 
@@ -106,16 +103,6 @@ This project was a deep dive into practical, real-world deployment challenges. K
 - **Schema and Data Orchestration:** Understood that application functionality is deeply tied to correct database schema and initial data. The multi-step setup for the Shipping service (load schema -> rename table -> load data) was a critical lesson in state management.
 - **The Power of the Reverse Proxy:** Gained a deep appreciation for Nginx as a gateway for controlling access, routing traffic, and simplifying a complex microservices architecture.
 
-## 8. Future Improvements
-
-This project serves as an excellent baseline. The next logical steps are to automate this entire process:
-- **[ ] Infrastructure as Code (IaC):** Use `Terraform` to codify the creation of all AWS resources (VPC, EC2 instances, Security Groups, etc.).
-- **[ ] Configuration Management:** Use `Ansible` to automate all the server-side steps documented in the manual guide (installing packages, configuring services, etc.).
-- **[ ] CI/CD Pipeline:** Create a `Jenkins` or `GitHub Actions` pipeline that automatically triggers the Terraform and Ansible automation when code is pushed to this repository.
-
-<!-- 
-This section is optional, but professional!
--->
 ---
 <p align="center">
   Find me on <a href="[Your LinkedIn URL]">LinkedIn</a> or check out my other projects on <a href="[Your GitHub Profile URL]">GitHub</a>.
