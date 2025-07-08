@@ -15,6 +15,14 @@ This repository provides a comprehensive toolkit for deploying the RoboShop micr
 
 ---
 
+## Architectural Overview
+
+The application is deployed using a secure, three-tier architecture that separates concerns and minimizes attack surface by isolating backend components.
+
+![RoboShop Architecture Diagram](./assets/roboshop-architecture.png)
+
+---
+
 ## Repository Contents
 
 This repository is structured into three primary directories, each offering a complete and standalone method for deploying the application.
@@ -29,13 +37,6 @@ This repository is structured into three primary directories, each offering a co
   - The most advanced deployment method. This section uses Ansible to define the entire application stack in a declarative, idempotent, and reusable way, utilizing roles and templates for production-grade configuration management.
 
 ---
-
-## Architectural Overview
-
-The application is deployed using a secure, three-tier architecture that separates concerns and minimizes attack surface by isolating backend components.
-
-![RoboShop Architecture Diagram](./assets/roboshop-architecture.png)
-
 ### **Presentation Tier (Web)**
 *   **Role:** Serves as the public-facing entry point for the application.
 *   **Technology:** Nginx is used to serve the static frontend content (HTML, CSS, JS) and to act as a **reverse proxy**. It securely routes API requests from users to the appropriate internal microservices.
@@ -53,20 +54,6 @@ The application is deployed using a secure, three-tier architecture that separat
     *   **Redis:** Provides high-speed, in-memory caching for user sessions.
     *   **RabbitMQ:** Decouples services through asynchronous message passing.
 
----
-
-## Recommended Deployment Method: Ansible
-
-For a full, reliable deployment, using the Ansible engine in the [`/ansible`](./ansible/) directory is the recommended approach. It uses a master playbook (`site.yml`) to orchestrate roles and deploy the entire stack in one command.
-
-#### **Execution Steps:**
-
-1.  **Configure:** Update the `ansible/inventory.ini` file with the IP addresses of your provisioned EC2 instances.
-2.  **Execute:** Navigate to the `/ansible` directory and run the master playbook:
-    ```bash
-    # This single command configures the entire application stack.
-    ansible-playbook -i inventory.ini site.yml
-    ```
 ---
 
 ## About This Project
