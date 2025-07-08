@@ -43,10 +43,10 @@ This project utilizes a wide range of industry-standard technologies to mirror a
 The complete end-to-end deployment process is documented in a modular, step-by-step format. Each file below is a detailed runbook for a specific component.
 
 *   **Infrastructure & Setup**
-    *   [✔️ 01 - Frontend (Nginx)](./01-Frontend.md)
-    *   [✔️ 02 - MongoDB](./02-MongoDB.md)
-    *   [✔️ 03 - Catalogue Service](./03-Catalogue.md)
-    *   [📝 04 - Redis](./04-Redis.md) <!-- Edit this to add ✔️ when you are done with the content -->
+    *   [✔️ 01 - Frontend (Nginx)](./Manual-Deployment/01-Frontend.md)
+    *   [✔️ 02 - MongoDB](./Manual-Deployment/02-MongoDB.md)
+    *   [✔️ 03 - Catalogue Service](./Manual-Deployment/03-Catalogue.md)
+    *   [📝 04 - Redis](./Manual-Deployment04-Redis.md) <!-- Edit this to add ✔️ when you are done with the content -->
     *   [📝 05 - User Service](./05-User.md)
     *   [📝 06 - Cart Service](./06-Cart.md) <!-- Placeholder for next service -->
     *   [📝 07 - MySQL](./07-MySQL.md) <!-- Placeholder for next service -->
