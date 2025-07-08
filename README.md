@@ -18,7 +18,7 @@ The RoboShop application follows a classic **Three-Tier Architecture**, which lo
 Below is a conceptual diagram of the service communication and dependency flow that was implemented for this project.
 
 
-![RoboShop Architecture Diagram](roboshop-architecture.png)
+![RoboShop Architecture Diagram](assets/roboshop-architecture.png)
 
 ---
 
