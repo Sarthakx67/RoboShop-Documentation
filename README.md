@@ -1,86 +1,60 @@
-# RoboShop End-to-End Deployment on AWS
+# RoboShop Deployment Engine: A Multi-Phase Automation Project
 
-[![Project Status: In Progress](https://img.shields.io/badge/status-in_progress-yellow.svg)](https://github.com/Sarthakx67/RoboShop-Documentation/)
+This repository documents my initiative to engineer a complete deployment solution for the RoboShop microservices application on AWS. The project was executed in three distinct, progressive phases, moving from a foundational manual setup to a production-grade, declarative automation engine using Ansible.
 
-This repository serves as a comprehensive portfolio project, documenting the complete manual deployment of the RoboShop e-commerce application. Its primary goal is to demonstrate and solidify foundational DevOps skills, including cloud infrastructure setup, network configuration, manual service deployment, and system troubleshooting in a realistic, multi-tier environment.
+## Project Thesis
+The core philosophy of this project was to master the deployment process through progressive automation. By starting with a meticulous manual build, I developed the deep system understanding required to build meaningful, robust automation—first with procedural shell scripts, and culminating in a declarative, idempotent system with Ansible. This repository is the result of that engineering effort.
 
----
+## Core Technologies
+![Ansible](https://img.shields.io/badge/Ansible-1A1924?style=for-the-badge&logo=ansible&logoColor=white)
+![AWS](https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white)
+![Shell Script](https://img.shields.io/badge/Bash-4EAA25?style=for-the-badge&logo=gnubash&logoColor=white)
+![Nginx](https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white)
+![Node.js](https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white)
+![Java](https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=openjdk&logoColor=white)
+![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white)
+![Redis](https://img.shields.io/badge/Redis-DD0031?style=for-the-badge&logo=redis&logoColor=white)
+
+<br>
+
+## Project Deliverables Analysis
+This project is structured into three phases, each yielding a specific set of artifacts.
+
+| Phase                                   | Artifact Description                                                                                                                   | Key Characteristics                                        |
+| :-------------------------------------- | :----------------------------------------------------------------------------------------------------------------------------------- | :--------------------------------------------------------- |
+| **1. Manual Documentation**             | Foundational, step-by-step guides for manually deploying each service, located in [`/docs`](./docs/). Essential for understanding system dependencies.        | **Procedural, Foundational, Detailed**                     |
+| **2. Scripted Automation**              | The first layer of automation. These procedural shell scripts, found in [`/scripts`](./scripts/), automate the manual steps for repeatability.                       | **Repeatable, Procedural, Foundational Automation**        |
+| **3. Declarative Automation**           | **(Project Centerpiece)** A production-grade Ansible engine located in [`/ansible`](./ansible/). This declaratively defines the desired state of the entire application stack.          | **Declarative, Idempotent, Modular, Reusable**             |
+
+<br>
 
 ## System Architecture
+The infrastructure is a security-focused, three-tier architecture. All backend services are isolated in private network subnets with no direct internet access. Nginx serves as the single, fortified entry point.
 
-The application is deployed using a classic **Three-Tier Architecture**. This design separates concerns into distinct layers, which enhances security, simplifies maintenance, and allows each tier to be scaled independently.
-
-The custom diagram below illustrates the flow of communication between the components as implemented in this project.
-
-<!-- This relative path points to the image inside your 'assets' folder -->
 ![RoboShop Architecture Diagram](./assets/roboshop-architecture.png)
 
-*   **Presentation Tier (Frontend):** A public-facing Nginx server that serves static content and acts as a secure reverse proxy for all backend services.
-*   **Application Tier (Backend):** A set of protected microservices running in a private network, each handling specific business logic (e.g., Catalogue, User, Cart).
-*   **Persistence Tier (Data):** A collection of databases, caches, and message brokers, also in a private network, to manage all application data (e.g., MongoDB, Redis, MySQL).
+<br>
 
+## Ansible Automation Engine: Technical Deep Dive
+The Ansible implementation is the core technical achievement of this project and is designed using industry best practices.
+
+*   **Declarative & Idempotent:** Playbooks define the *desired state* of the system, not just a series of commands. They can be run multiple times with the same outcome.
+*   **Modular Architecture via Roles:** Logic is cleanly separated into reusable **roles** for each component (e.g., `mongodb`, `catalogue`). This makes the system maintainable and scalable.
+*   **Dynamic Configuration with Templates:** Jinja2 templates (`*.j2`) are used extensively to generate dynamic server configuration files. This avoids hardcoding values and allows for flexible deployments based on variables.
+*   **Centralized Orchestration:** The master playbook, [`site.yml`](./ansible/site.yml), orchestrates the entire deployment, applying the correct roles to host groups defined in the [`inventory.ini`](./ansible/inventory.ini`) file.
+
+### How to Execute the Ansible Engine
+1.  **Configure Inventory:** Populate `ansible/inventory.ini` with the IP addresses of your target EC2 instances.
+2.  **Execute Playbook:** From within the `ansible/` directory, run the master playbook:
+    ```bash
+    # This single command configures the entire application stack.
+    ansible-playbook -i inventory.ini site.yml
+    ```
 ---
 
-## Technology Stack
+## Project Next Steps
+This project currently culminates at Phase 3. The logical evolution is to automate the infrastructure layer itself:
 
-This project utilizes a wide range of industry-standard technologies to mirror a real-world polyglot environment.
-
-| Category                  | Technologies                                |
-|---------------------------|---------------------------------------------|
-| **Cloud Provider**        | Amazon Web Services (AWS)                   |
-| **Compute & Networking**  | EC2, VPC, Subnets, Security Groups, Route 53 |
-| **Web Server**            | Nginx                                       |
-| **Application Runtimes**  | NodeJS, Python, Java                        |
-| **Databases**             | MongoDB, MySQL, Redis                       |
-| **Messaging**             | RabbitMQ                                    |
-| **Deployment Tools**      | Bash, `systemd`, `yum`, `npm`               |
-
-
----
-
-## Deployment Runbooks
-
-The complete end-to-end deployment process is documented in a modular, step-by-step format. Each file below is a detailed runbook for a specific component.
-
-*   **Infrastructure & Setup**
-    *   [01 - Frontend (Nginx)](./RoboShop-Manual-Deployment/01-Web-Server.md)
-    *   [02 - MongoDB](./RoboShop-Manual-Deployment/02-Mongodb.md)
-    *   [03 - Catalogue Service](./RoboShop-Manual-Deployment/03-Catalogue.md)
-    *   [04 - Redis](./RoboShop-Manual-Deployment/04-Redis.md) <!-- Edit this to add ✔️ when you are done with the content -->
-    *   [05 - User Service](./RoboShop-Manual-Deployment/05-User.md)
-    *   [06 - Cart Service](./RoboShop-Manual-Deployment/06-Cart.md) <!-- Placeholder for next service -->
-    *   [07 - MySQL](./RoboShop-Manual-Deployment/07-MySQL.md) <!-- Placeholder for next service -->
-    *   [08 - Shipping Service](./RoboShop-Manual-Deployment/08-Shipping.md) <!-- Placeholder for next service -->
-    *   [09 - RabbitMQ](./RoboShop-Manual-Deployment/09-RabbitMQ.md) <!-- Placeholder for next service -->
-    *   [10 - Payment](./RoboShop-Manual-Deployment/10-Payment.md) <!-- Placeholder for next service -->
-    *   [11 - Dispatch](./RoboShop-Manual-Deployment/11-Dispatch.md) <!-- Placeholder for next service -->
-
-
----
-
-## Project Learning Objectives
-
-Through this project, I am developing and demonstrating proficiency in:
-
--   [x] Cloud infrastructure design and manual provisioning on AWS.
--   [x] Configuring network security (VPCs, Public/Private Subnets, Security Groups).
--   [x] Deploying and managing Linux-based web servers and reverse proxies (Nginx).
--   [x] Manually deploying polyglot microservices (NodeJS, Python, Java).
--   [x] Setting up and managing multiple database systems (MongoDB, Redis, MySQL).
--   [x] Creating and managing systemd services to ensure application reliability.
--   [ ] Creating high-quality technical documentation for operational procedures.
-
----
-
-## Future Roadmap
-
-This manual deployment project is the foundational first phase. The subsequent phases of this project will focus on progressive automation, applying core DevOps principles.
-
-*   **Phase 2: Automation with Bash Scripting**
-    *   Convert all manual command sequences into reusable Bash scripts to make deployments repeatable.
-*   **Phase 3: Configuration Management with Ansible**
-    *   Develop Ansible playbooks and roles to fully automate the configuration and deployment of all application services.
-*   **Phase 4: Infrastructure as Code (IaC) with Terraform**
-    *   Write Terraform code to automatically provision the entire AWS infrastructure stack (VPC, EC2 instances, Security Groups, etc.).
-*   **Phase 5: Continuous Integration/Continuous Deployment (CI/CD) with Jenkins**
-    *   Create a Jenkins pipeline to automatically trigger the Terraform and Ansible jobs, building a complete CI/CD workflow from code commit to deployment.
+*   **Phase 4 - Infrastructure as Code:** Implement Terraform to programmatically provision all AWS resources (EC2 instances, VPC, Security Groups), making the entire environment reproducible from code.
+*   **Phase 5 - CI/CD Integration:** Integrate the Terraform and Ansible automation into a Jenkins or GitHub Actions pipeline to create a fully automated deployment workflow.
