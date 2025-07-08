@@ -83,7 +83,7 @@ A clean and organized repository structure for the manual deployment documentati
 │   │   └── roboshop-architecture.png
 │   └── gifs/
 │       └── roboshop-demo.gif
-├── MANUAL_DEPLOYMENT.md        <-- You Are Here
+├── MANUAL_DEPLOYMENT.md        
 └── README.md
 ```
 
