@@ -1,49 +1,84 @@
-# RoboShop E-Commerce Platform Deployment Project
+# RoboShop End-to-End Deployment on AWS
 
-**Author:** Sarthak Singh
-**Contact:** sarthakx67@gmail.com / www.linkedin.com/in/sarthak-singh-a0aa62322 
+[![Project Status: In Progress](https://img.shields.io/badge/status-in_progress-yellow.svg)](https://github.com/Sarthakx67/RoboShop-Documentation/)
 
----
-
-## Project Overview
-
-This repository contains the complete documentation for the deployment of the RoboShop application, a polyglot, microservices-based e-commerce platform. The primary goal of this project is to serve as a portfolio piece demonstrating a practical understanding of cloud infrastructure, manual service deployment, and the foundational principles of DevOps.
-
-The documentation is divided into a high-level architectural overview (this file) and detailed, step-by-step deployment guides for each individual component.
-
-## Application Architecture
-
-The RoboShop application follows a classic **Three-Tier Architecture**, which logically and physically separates components based on their function. This design enhances security, scalability, and maintainability.
-
-Below is a conceptual diagram of the service communication and dependency flow that was implemented for this project.
-
-
-![RoboShop Architecture Diagram](assets/roboshop-architecture.png)
+This repository serves as a comprehensive portfolio project, documenting the complete manual deployment of the RoboShop e-commerce application. Its primary goal is to demonstrate and solidify foundational DevOps skills, including cloud infrastructure setup, network configuration, manual service deployment, and system troubleshooting in a realistic, multi-tier environment.
 
 ---
 
-### Tier 1: Presentation Tier (The Frontend)
+## System Architecture
 
-This tier serves as the primary user-facing entry point for the entire application. It is responsible for delivering the web interface to the user's browser.
+The application is deployed using a classic **Three-Tier Architecture**. This design separates concerns into distinct layers, which enhances security, simplifies maintenance, and allows each tier to be scaled independently.
 
-*   **Primary Technology:** Nginx is used as the web server for this tier.
-*   **Key Functions:**
-    *   **Serving Static Content:** Delivers the HTML, CSS, and JavaScript files that make up the user interface.
-    *   **Reverse Proxy:** Acts as a gateway for all API requests. It forwards requests from the user's browser to the appropriate backend service in the application tier, hiding the internal network topology from the end-user.
+The custom diagram below illustrates the flow of communication between the components as implemented in this project.
 
-### Tier 2: Application Tier (Backend Microservices)
+<!-- This relative path points to the image inside your 'assets' folder -->
+![RoboShop Architecture Diagram](./assets/roboshop-architecture.png)
 
-This tier contains the core business logic of the application, broken down into multiple, independent microservices.
+*   **Presentation Tier (Frontend):** A public-facing Nginx server that serves static content and acts as a secure reverse proxy for all backend services.
+*   **Application Tier (Backend):** A set of protected microservices running in a private network, each handling specific business logic (e.g., Catalogue, User, Cart).
+*   **Persistence Tier (Data):** A collection of databases, caches, and message brokers, also in a private network, to manage all application data (e.g., MongoDB, Redis, MySQL).
 
-*   **Service Examples:** `Catalogue`, `User`, `Cart`, `Shipping`, etc.
-*   **Technology:** This tier is **polyglot**, meaning different services are built with different technologies (NodeJS, Python, Java) as best fits their purpose. Most services run with their own embedded servers.
-*   **Security Principle:** The entire application tier is deployed within a private network. Services here are **not accessible directly from the internet**. All inbound communication must pass through the Nginx reverse proxy in the presentation tier, creating a secure boundary.
+---
 
-### Tier 3: Persistence Tier (Databases & Data Stores)
+## Technology Stack
 
-This tier handles all data storage, caching, and messaging needs for the application. It is also deployed in a private network, accessible only by the services in the application tier that require it.
+This project utilizes a wide range of industry-standard technologies to mirror a real-world polyglot environment.
 
-*   **Relational Database (RDBMS):** Systems like **MySQL** are used for structured data that requires high transactional integrity, such as user profiles and order history.
-*   **NoSQL Database:** **MongoDB** is used to store less structured, document-based data, making it ideal for the product catalog.
-*   **In-Memory Cache:** **Redis** provides a high-speed caching layer. It stores frequently accessed data (like user sessions) in memory to reduce response times and decrease load on the primary databases.
-*   **Message Broker (MQ):** **RabbitMQ** enables asynchronous communication between services. This decouples services from each other, improving resilience. For example, an `orders` service can publish a "new order placed" message, which a `shipping` service can consume independently without the two needing to communicate directly.
+| Category                  | Technologies                                |
+|---------------------------|---------------------------------------------|
+| **Cloud Provider**        | Amazon Web Services (AWS)                   |
+| **Compute & Networking**  | EC2, VPC, Subnets, Security Groups, Route 53 |
+| **Web Server**            | Nginx                                       |
+| **Application Runtimes**  | NodeJS, Python, Java                        |
+| **Databases**             | MongoDB, MySQL, Redis                       |
+| **Messaging**             | RabbitMQ                                    |
+| **Deployment Tools**      | Bash, `systemd`, `yum`, `npm`               |
+
+
+---
+
+## Deployment Runbooks
+
+The complete end-to-end deployment process is documented in a modular, step-by-step format. Each file below is a detailed runbook for a specific component.
+
+*   **Infrastructure & Setup**
+    *   [✔️ 01 - Frontend (Nginx)](./01-Frontend.md)
+    *   [✔️ 02 - MongoDB](./02-MongoDB.md)
+    *   [✔️ 03 - Catalogue Service](./03-Catalogue.md)
+    *   [📝 04 - Redis](./04-Redis.md) <!-- Edit this to add ✔️ when you are done with the content -->
+    *   [📝 05 - User Service](./05-User.md)
+    *   [📝 06 - Cart Service](./06-Cart.md) <!-- Placeholder for next service -->
+    *   [📝 07 - MySQL](./07-MySQL.md) <!-- Placeholder for next service -->
+    *   [📝 08 - Shipping Service](./08-Shipping.md) <!-- Placeholder for next service -->
+    *   [📝 09 - Payment Service](./09-Payment.md) <!-- Placeholder for next service -->
+
+
+---
+
+## Project Learning Objectives
+
+Through this project, I am developing and demonstrating proficiency in:
+
+-   [x] Cloud infrastructure design and manual provisioning on AWS.
+-   [x] Configuring network security (VPCs, Public/Private Subnets, Security Groups).
+-   [x] Deploying and managing Linux-based web servers and reverse proxies (Nginx).
+-   [x] Manually deploying polyglot microservices (NodeJS, Python, Java).
+-   [x] Setting up and managing multiple database systems (MongoDB, Redis, MySQL).
+-   [x] Creating and managing systemd services to ensure application reliability.
+-   [ ] Creating high-quality technical documentation for operational procedures.
+
+---
+
+## Future Roadmap
+
+This manual deployment project is the foundational first phase. The subsequent phases of this project will focus on progressive automation, applying core DevOps principles.
+
+*   **Phase 2: Automation with Bash Scripting**
+    *   Convert all manual command sequences into reusable Bash scripts to make deployments repeatable.
+*   **Phase 3: Configuration Management with Ansible**
+    *   Develop Ansible playbooks and roles to fully automate the configuration and deployment of all application services.
+*   **Phase 4: Infrastructure as Code (IaC) with Terraform**
+    *   Write Terraform code to automatically provision the entire AWS infrastructure stack (VPC, EC2 instances, Security Groups, etc.).
+*   **Phase 5: Continuous Integration/Continuous Deployment (CI/CD) with Jenkins**
+    *   Create a Jenkins pipeline to automatically trigger the Terraform and Ansible jobs, building a complete CI/CD workflow from code commit to deployment.
