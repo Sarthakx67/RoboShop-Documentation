@@ -1,0 +1,32 @@
+- name: setting up mongodb server
+  hosts: mongodb
+  become: yes
+  tasks:
+  - name: install extra packages for enterprise linux
+    ansible.builtin.yum:
+      name: epel-release
+      state: installed
+  - name: Temporarily set SELinux to permissive mode
+    ansible.builtin.command: setenforce 0
+  - name: copy mongodb repo file
+    ansible.builtin.copy:
+      src: 01-mongodb.repo
+      dest: /etc/yum.repos.d/mongo.repo
+  - name: install mongodb
+    ansible.builtin.yum: 
+      name: mongodb-org
+      state: installed
+  - name: Starting and Enable mongodb server
+    ansible.builtin.service:
+      name: mongod
+      state: started
+      enabled: yes
+  - name: enable remote connections to mongodb
+    ansible.builtin.replace:
+      path: /etc/mongod.conf
+      regexp: '127.0.0.1' #text to replace
+      replace: '0.0.0.0'
+  - name: restart mongodb
+    ansible.builtin.service:
+      name: mongod
+      state: restarted

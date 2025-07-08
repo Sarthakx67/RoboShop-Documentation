@@ -1,0 +1,27 @@
+[all:vars]
+ansible_user=ec2-user
+ansible_ssh_private_key_file=/ansible-roboshop/EC2-key.pem
+
+
+[mongodb]
+mongodb-node ansible_host=15.206.149.178
+[catalogue]
+catalogue-node ansible_host=172.31.5.80
+[webserver]
+web-server-node ansible_host=172.31.15.121
+[redis]
+redis-node ansible_host=172.31.4.198
+[cart]
+cart-node ansible_host=172.31.8.30
+[user]
+user-node ansible_host=172.31.14.139
+[mysql]
+mysql-node ansible_host=172.31.15.68
+[shipping]
+shipping-node ansible_host=172.31.3.180
+[rabbitmq]
+rabbitmq-node ansible_host=172.31.14.111
+[payment]
+payment-node ansible_host=172.31.12.218
+[dispatch]
+dispatch-node ansible_host=172.31.8.72
