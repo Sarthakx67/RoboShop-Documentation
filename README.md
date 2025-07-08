@@ -1,6 +1,6 @@
-# RoboShop Deployment & Automation
+# RoboShop Deployment & Automation Toolkit
 
-This repository provides a comprehensive toolkit for deploying the RoboShop microservices application on AWS. It contains three distinct deployment methods, each housed in its own directory, demonstrating a progression from foundational manual procedures to production-grade, declarative automation.
+This repository provides a comprehensive toolkit for deploying the RoboShop microservices application on AWS. It contains three distinct, complete deployment methods, demonstrating a progression from foundational manual procedures to production-grade, declarative automation.
 
 ## Technology Showcase
 ![Ansible](https://img.shields.io/badge/Ansible-1A1924?style=for-the-badge&logo=ansible&logoColor=white)
@@ -15,48 +15,51 @@ This repository provides a comprehensive toolkit for deploying the RoboShop micr
 
 ---
 
-## Repository Contents: Three Deployment Methods
+## Repository Contents
 
 This repository is structured into three primary directories, each offering a complete and standalone method for deploying the application.
 
-### 1. `/docs` — Manual Deployment Runbooks
-This directory contains the foundational, step-by-step documentation for manually deploying and configuring every RoboShop service from a base operating system. It's designed to provide a deep, fundamental understanding of the entire stack.
-*   **Methodology:** Procedural, command-by-command instructions.
-*   **Use Case:** Essential for learning the intricacies of each component, for training, or for troubleshooting.
-*   **[Browse Manual Deployment Documentation →](./docs/)**
+- **[`/docs`](./docs/) — Manual Deployment Runbooks**
+  - Contains foundational, step-by-step documentation for manually deploying and configuring every RoboShop service. This is ideal for understanding the core dependencies of the system.
 
-### 2. `/scripts` — Scripted Automation with Bash
-This directory contains a full set of Bash scripts that automate the manual procedures documented in `/docs`. Each script is designed for repeatability and basic error handling.
-*   **Methodology:** Procedural automation.
-*   **Use Case:** For quickly deploying individual components or for environments where a simple scripting solution is preferred over a full configuration management tool.
-*   **[Browse Automation Scripts →](./scripts/)**
+- **[`/scripts`](./scripts/) — Scripted Automation with Bash**
+  - Provides a full set of Bash scripts that automate the manual procedures documented in `/docs`. This demonstrates repeatable, procedural automation.
 
-### 3. `/ansible` — Declarative Automation with Ansible
-This directory represents the most advanced, production-grade deployment method. It uses Ansible to define the entire application stack in a declarative, idempotent, and reusable way, utilizing roles and templates for maximum efficiency.
-*   **Methodology:** Declarative configuration management.
-*   **Use Case:** Recommended for deploying the entire application stack reliably and consistently across any environment.
-*   **[Browse Ansible Engine →](./ansible/)**
+- **[`/ansible`](./ansible/) — Declarative Automation with Ansible**
+  - The most advanced deployment method. This section uses Ansible to define the entire application stack in a declarative, idempotent, and reusable way, utilizing roles and templates for production-grade configuration management.
 
 ---
 
-## System Architecture
+## Architectural Overview
 
-All three deployment methods result in the same secure, three-tier architecture illustrated below. All backend and database components are isolated in private network subnets, with Nginx serving as the single, fortified public entry point.
+The application is deployed using a secure, three-tier architecture that separates concerns and minimizes attack surface by isolating backend components.
 
 ![RoboShop Architecture Diagram](./assets/roboshop-architecture.png)
+
+### **Presentation Tier (Web)**
+*   **Role:** Serves as the public-facing entry point for the application.
+*   **Technology:** Nginx is used to serve the static frontend content (HTML, CSS, JS) and to act as a **reverse proxy**. It securely routes API requests from users to the appropriate internal microservices.
+
+### **Application Tier (App)**
+*   **Role:** Contains the core business logic of the application, composed of multiple, independent microservices.
+*   **Key Principle:** This entire tier is deployed in a private network, inaccessible from the internet. All traffic must be proxied through the Web Tier, creating a secure boundary.
+*   **Technology:** The services are polyglot (NodeJS, Java, etc.) and run with their own embedded servers.
+
+### **Persistence Tier (DB)**
+*   **Role:** Manages all data storage, caching, and messaging for the application.
+*   **Technology:** This tier utilizes the best tool for each job:
+    *   **MongoDB:** Stores the unstructured product catalog.
+    *   **MySQL:** Manages transactional data like user accounts and orders.
+    *   **Redis:** Provides high-speed, in-memory caching for user sessions.
+    *   **RabbitMQ:** Decouples services through asynchronous message passing.
 
 ---
 
 ## Recommended Deployment Method: Ansible
 
-For a full, reliable deployment, using the Ansible engine is the recommended approach.
+For a full, reliable deployment, using the Ansible engine in the [`/ansible`](./ansible/) directory is the recommended approach. It uses a master playbook (`site.yml`) to orchestrate roles and deploy the entire stack in one command.
 
-### Key Features of the Ansible Implementation:
-*   **Modular & Reusable:** The logic for each component (`mongodb`, `catalogue`, etc.) is encapsulated in its own **role**, making the system easy to maintain and extend.
-*   **Dynamic Configuration:** Jinja2 templates (`*.j2`) are used to generate server-specific configuration files on the fly, eliminating hardcoded values and increasing flexibility.
-*   **Centralized Orchestration:** The master playbook, [`site.yml`](./ansible/site.yml), acts as the single entry point to orchestrate the entire deployment across all servers defined in the [`inventory.ini`](./ansible/inventory.ini).
-
-### How to Execute the Ansible Deployment:
+#### **Execution Steps:**
 
 1.  **Configure:** Update the `ansible/inventory.ini` file with the IP addresses of your provisioned EC2 instances.
 2.  **Execute:** Navigate to the `/ansible` directory and run the master playbook:
@@ -66,8 +69,5 @@ For a full, reliable deployment, using the Ansible engine is the recommended app
     ```
 ---
 
-## Future Development
-
-While the Ansible implementation provides robust configuration management, the infrastructure itself is still provisioned manually. The next logical extension of this project is:
-
-*   **Infrastructure as Code (IaC):** Create a new `/terraform` directory and write Terraform code to fully automate the provisioning of all necessary AWS resources (VPC, Subnets, EC2 Instances, Security Groups, etc.), making the entire environment reproducible from code.
+## About This Project
+This repository is a portfolio piece designed to showcase hands-on proficiency in cloud deployment and automation. It demonstrates a clear progression from manual, procedural tasks to fully declarative, production-ready configuration management.
