@@ -1,7 +1,7 @@
 # RoboShop E-Commerce Platform Deployment Project
 
-**Author:** [Your Name]
-**Contact:** [Your Email or LinkedIn Profile URL]
+**Author:** Sarthak Singh
+**Contact:** sarthakx67@gmail.com / www.linkedin.com/in/sarthak-singh-a0aa62322 
 
 ---
 
@@ -17,7 +17,6 @@ The RoboShop application follows a classic **Three-Tier Architecture**, which lo
 
 Below is a conceptual diagram of the service communication and dependency flow that was implemented for this project.
 
-**(Action Item): It is highly recommended to replace the image below with a custom architecture diagram you have created using a tool like `app.diagrams.net` (draw.io). This is a key step to showcase your understanding of the system.**
 
 ![RoboShop Architecture Diagram](roboshop-architecture.png)
 
