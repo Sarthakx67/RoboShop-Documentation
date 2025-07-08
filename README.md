@@ -51,9 +51,9 @@ The complete end-to-end deployment process is documented in a modular, step-by-s
     *   [06 - Cart Service](./Manual-Deployment/06-Cart.md) <!-- Placeholder for next service -->
     *   [07 - MySQL](./Manual-Deployment/07-MySQL.md) <!-- Placeholder for next service -->
     *   [08 - Shipping Service](./Manual-Deployment/08-Shipping.md) <!-- Placeholder for next service -->
-    *   [09 - RabbitMQ](./Manual-Deployment/09-RabbitMQ.md)
-    *   [10 - Payment](./Manual-Deployment/10-Payment.md)
-    *   [11 - Dispatch](./Manual-Deployment/11-Dispatch.md) 
+    *   [09 - RabbitMQ](./Manual-Deployment/09-RabbitMQ.md) <!-- Placeholder for next service -->
+    *   [10 - Payment](./Manual-Deployment/10-Payment.md) <!-- Placeholder for next service -->
+    *   [11 - Dispatch](./Manual-Deployment/11-Dispatch.md) <!-- Placeholder for next service -->
 
 
 ---
