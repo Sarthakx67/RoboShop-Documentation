@@ -1,109 +1,50 @@
-<!-- 
-=================================================================================
-!!! HELLO! THIS IS YOUR FINAL README TEMPLATE FOR THE MANUAL DEPLOYMENT !!!
-Fill in the sections below. The comments like this one will not be visible in the
-final rendered README.
-=================================================================================
--->
+# RoboShop E-Commerce Platform Deployment Project
 
-<h1 align="center">RoboShop: A DevOps End-to-End Deployment Project</h1>
-<p align="center">
-  <em>A comprehensive portfolio project demonstrating the meticulous manual deployment of a polyglot microservices e-commerce application onto AWS.</em>
-</p>
-
-<!-- Badges are a great way to show off! Go to shields.io to create your own. -->
-<p align="center">
-  <img src="https://img.shields.io/badge/Project%20Status-Complete-green.svg" alt="Project Status">
-  <img src="https://img.shields.io/badge/License-MIT-blue.svg" alt="License">
-  <img src="https://img.shields.io/badge/AWS-232F3E?style=for-the-badge&logo=amazon-aws&logoColor=white" alt="AWS">
-  <img src="https://img.shields.io/badge/Nginx-009639?style=for-the-badge&logo=nginx&logoColor=white" alt="Nginx">
-  <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=mysql&logoColor=white" alt="MySQL">
-  <img src="https://img.shields.io/badge/MongoDB-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB">
-  <img src="https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white" alt="Java">
-  <img src="https://img.shields.io/badge/Go-00ADD8?style=for-the-badge&logo=go&logoColor=white" alt="Go">
-</p>
+**Author:** [Your Name]
+**Contact:** [Your Email or LinkedIn Profile URL]
 
 ---
 
-## 1. Project Overview
+## Project Overview
 
-This project is a hands-on implementation of deploying a full-stack, microservices-based e-commerce application named **RoboShop**. The primary goal is to demonstrate a deep, practical understanding of core DevOps principles, including infrastructure setup, configuration management, service deployment, and inter-service communication through a meticulous **Manual Deployment** in a cloud environment.
+This repository contains the complete documentation for the deployment of the RoboShop application, a polyglot, microservices-based e-commerce platform. The primary goal of this project is to serve as a portfolio piece demonstrating a practical understanding of cloud infrastructure, manual service deployment, and the foundational principles of DevOps.
 
-## 2. Live Demo
+The documentation is divided into a high-level architectural overview (this file) and detailed, step-by-step deployment guides for each individual component.
 
-<!--
-!!! ACTION ITEM !!!
-Record a short GIF of you using the application!
-1. Start recording your screen (Use a tool like LICEcap, Giphy Capture, or Kap).
-2. Browse your running application: open the homepage, click a product, add it to the cart.
-3. Save the recording as a GIF and place it in a 'docs/gifs' folder in your repository.
-4. Replace the link below.
--->
+## Application Architecture
 
-![RoboShop Live Demo](docs/gifs/roboshop-demo.gif)
+The RoboShop application follows a classic **Three-Tier Architecture**, which logically and physically separates components based on their function. This design enhances security, scalability, and maintainability.
 
-## 3. Architecture
+Below is a conceptual diagram of the service communication and dependency flow that was implemented for this project.
 
-The application is built on a classic, robust three-tier architecture, physically deployed across multiple Amazon EC2 instances within a custom VPC. This design enhances security by isolating the application and persistence tiers from direct public access.
+**(Action Item): It is highly recommended to replace the image below with a custom architecture diagram you have created using a tool like `app.diagrams.net` (draw.io). This is a key step to showcase your understanding of the system.**
 
-<!--
-!!! ACTION ITEM !!!
-Create your architecture diagram!
-1. Use a free tool like app.diagrams.net or Lucidchart.
-2. Export it as a .png or .svg file and place it in a 'docs/diagrams' folder.
-3. Replace the link below.
--->
-
-![RoboShop Architecture Diagram](docs/diagrams/roboshop-architecture.png)
-
-## 4. Key Features & Technologies
-
-### Application Features
-- **User Authentication:** Sign up, log in, and session management.
-- **Product Catalog:** View and search for products.
-- **Shopping Cart:** Add, update, and remove items.
-- **Payment & Shipping:** Simulate payment processing and order dispatch.
-
-### Technology Stack
-- **Cloud Provider:** `Amazon Web Services (AWS)`
-- **Web Server & Reverse Proxy:** `Nginx`
-- **Application Runtimes:** `NodeJS`, `Java`, `Python`, `GoLang`
-- **Databases:** `MySQL 5.7` (Relational), `MongoDB` (NoSQL), `Redis` (In-Memory Cache)
-- **Messaging Queue:** `RabbitMQ`
-- **Build Tools:** `Maven` (for Java), `Go Modules` (for Go)
-- **Operating System:** `CentOS / RHEL 8`
-
-## 5. Project Structure
-
-A clean and organized repository structure for the manual deployment documentation.
-
-```roboshop-project/
-├── docs/
-│   ├── diagrams/
-│   │   └── roboshop-architecture.png
-│   └── gifs/
-│       └── roboshop-demo.gif
-├── MANUAL_DEPLOYMENT.md        
-└── README.md
-```
-
-## 6. How To Use This Documentation
-
-This project contains a highly detailed deployment runbook. The best place to start is with the complete manual deployment guide.
-
-➡️ **[View the Complete Manual Deployment Guide](./MANUAL_DEPLOYMENT.md)**
-
-This guide contains the step-by-step commands, configurations, and troubleshooting steps for every single service, from the network setup to the final application verification.
-
-## 7. What I Learned
-
-This project was a deep dive into practical, real-world deployment challenges. Key learnings include:
-- **Robust Infrastructure Setup:** Mastered the process of configuring a secure AWS VPC, subnets, and security groups from scratch.
-- **Solving Dependency Conflicts:** Successfully troubleshooted and resolved OS-level package conflicts (e.g., `mariadb` vs `mysql`) and module filtering issues in CentOS 8.
-- **Schema and Data Orchestration:** Understood that application functionality is deeply tied to correct database schema and initial data. The multi-step setup for the Shipping service (load schema -> rename table -> load data) was a critical lesson in state management.
-- **The Power of the Reverse Proxy:** Gained a deep appreciation for Nginx as a gateway for controlling access, routing traffic, and simplifying a complex microservices architecture.
+![RoboShop Architecture Diagram](roboshop.jpg)
 
 ---
-<p align="center">
-  Find me on <a href="[Your LinkedIn URL]">LinkedIn</a> or check out my other projects on <a href="[Your GitHub Profile URL]">GitHub</a>.
-</p>
+
+### Tier 1: Presentation Tier (The Frontend)
+
+This tier serves as the primary user-facing entry point for the entire application. It is responsible for delivering the web interface to the user's browser.
+
+*   **Primary Technology:** Nginx is used as the web server for this tier.
+*   **Key Functions:**
+    *   **Serving Static Content:** Delivers the HTML, CSS, and JavaScript files that make up the user interface.
+    *   **Reverse Proxy:** Acts as a gateway for all API requests. It forwards requests from the user's browser to the appropriate backend service in the application tier, hiding the internal network topology from the end-user.
+
+### Tier 2: Application Tier (Backend Microservices)
+
+This tier contains the core business logic of the application, broken down into multiple, independent microservices.
+
+*   **Service Examples:** `Catalogue`, `User`, `Cart`, `Shipping`, etc.
+*   **Technology:** This tier is **polyglot**, meaning different services are built with different technologies (NodeJS, Python, Java) as best fits their purpose. Most services run with their own embedded servers.
+*   **Security Principle:** The entire application tier is deployed within a private network. Services here are **not accessible directly from the internet**. All inbound communication must pass through the Nginx reverse proxy in the presentation tier, creating a secure boundary.
+
+### Tier 3: Persistence Tier (Databases & Data Stores)
+
+This tier handles all data storage, caching, and messaging needs for the application. It is also deployed in a private network, accessible only by the services in the application tier that require it.
+
+*   **Relational Database (RDBMS):** Systems like **MySQL** are used for structured data that requires high transactional integrity, such as user profiles and order history.
+*   **NoSQL Database:** **MongoDB** is used to store less structured, document-based data, making it ideal for the product catalog.
+*   **In-Memory Cache:** **Redis** provides a high-speed caching layer. It stores frequently accessed data (like user sessions) in memory to reduce response times and decrease load on the primary databases.
+*   **Message Broker (MQ):** **RabbitMQ** enables asynchronous communication between services. This decouples services from each other, improving resilience. For example, an `orders` service can publish a "new order placed" message, which a `shipping` service can consume independently without the two needing to communicate directly.
