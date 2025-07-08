@@ -19,7 +19,7 @@ Below is a conceptual diagram of the service communication and dependency flow t
 
 **(Action Item): It is highly recommended to replace the image below with a custom architecture diagram you have created using a tool like `app.diagrams.net` (draw.io). This is a key step to showcase your understanding of the system.**
 
-![RoboShop Architecture Diagram](roboshop.jpg)
+![RoboShop Architecture Diagram](roboshop-architecture.png)
 
 ---
 
