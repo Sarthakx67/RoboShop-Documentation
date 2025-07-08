@@ -31,7 +31,7 @@ This repository is structured into three primary directories, each offering a co
   - Contains foundational, step-by-step documentation for manually deploying and configuring every RoboShop service. This is ideal for understanding the core dependencies of the system.
 
 - **[`/RoboShop-Shell-Script-Deployment`](./RoboShop-Shell-Script-Deployment/) — Scripted Automation with Bash**
-  - Provides a full set of Bash scripts that automate the manual procedures documented in `/docs`. This demonstrates repeatable, procedural automation.
+  - Provides a full set of Bash scripts that automate the manual procedures documented in `/RoboShop-Shell-Script-Deployment`. This demonstrates repeatable, procedural automation.
 
 - **[`/RoboShop-Ansible-Playbook`](./RoboShop-Ansible-Playbook/) — Declarative Automation with Ansible**
   - The most advanced deployment method. This section uses Ansible to define the entire application stack in a declarative, idempotent, and reusable way.
