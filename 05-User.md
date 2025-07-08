@@ -70,7 +70,7 @@ This section details the deployment of the User microservice. This is a NodeJS a
         ```sh
         # If not already present, install the mongo shell
         sudo yum install mongodb-org-shell -y
-        mongo --host <MONGODB-SERVER-IP-ADDRESS> </app/schema/user.js
+        mongo --host <MONGODB-SERVER-IP-ADDRESS> < /app/schema/user.js
         ```
 
 #### Configuration Deep Dive: Managing Multiple Dependencies
