@@ -43,15 +43,15 @@ This project utilizes a wide range of industry-standard technologies to mirror a
 The complete end-to-end deployment process is documented in a modular, step-by-step format. Each file below is a detailed runbook for a specific component.
 
 *   **Infrastructure & Setup**
-    *   [01 - Frontend (Nginx)](./Manual-Deployment/01-Frontend.md)
-    *   [02 - MongoDB](./Manual-Deployment/02-MongoDB.md)
+    *   [01 - Frontend (Nginx)](./Manual-Deployment/01-Web-Server.md)
+    *   [02 - MongoDB](./Manual-Deployment/02-Mongodb.md)
     *   [03 - Catalogue Service](./Manual-Deployment/03-Catalogue.md)
-    *   [04 - Redis](./Manual-Deployment04-Redis.md) <!-- Edit this to add ✔️ when you are done with the content -->
+    *   [04 - Redis](./Manual-Deployment/04-Redis.md) <!-- Edit this to add ✔️ when you are done with the content -->
     *   [05 - User Service](./Manual-Deployment/05-User.md)
-    *   [06 - Cart Service](./06-Cart.md) <!-- Placeholder for next service -->
-    *   [07 - MySQL](./07-MySQL.md) <!-- Placeholder for next service -->
-    *   [08 - Shipping Service](./08-Shipping.md) <!-- Placeholder for next service -->
-    *   [09 - Payment Service](./09-Payment.md) <!-- Placeholder for next service -->
+    *   [06 - Cart Service](./Manual-Deployment/06-Cart.md) <!-- Placeholder for next service -->
+    *   [07 - MySQL](./Manual-Deployment/07-MySQL.md) <!-- Placeholder for next service -->
+    *   [08 - Shipping Service](./Manual-Deployment/08-Shipping.md) <!-- Placeholder for next service -->
+    *   [09 - Payment Service](./Manual-Deployment/09-Payment.md) <!-- Placeholder for next service -->
 
 
 ---
