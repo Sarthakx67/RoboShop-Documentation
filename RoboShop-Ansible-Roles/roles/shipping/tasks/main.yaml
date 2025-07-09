@@ -1,25 +1,19 @@
----
-# tasks/main.yaml for the 'shipping' role
-
-# Define variables for this role for clarity and reusability.
-# In a real project, these would be in `group_vars` or passed in from an inventory.
- # The IP of your Cart service
-
 - name: Install prerequisite packages
   ansible.builtin.yum:
     name:
+      - epel-release
       - maven
-      - mysql-community-client # We only need the client tools here, not the server
+      - mysql
       - python3-PyMySQL
     state: present
 
-- name: Create Roboshop application user if it does not exist
+- name: Create Roboshop application user
   ansible.builtin.user:
     name: roboshop
     system: yes
     state: present
 
-- name: Ensure /app directory exists and has correct permissions
+- name: Ensure /app directory exists
   ansible.builtin.file:
     path: /app
     state: directory
@@ -34,64 +28,32 @@
     owner: roboshop
     group: roboshop
 
-- name: Build Java application with Maven
+- name: Build application with Maven
   ansible.builtin.command: mvn clean package
   args:
     chdir: /app
-  # This task will report as "changed" on every run, which is expected for `mvn`.
 
-- name: Deploy the systemd service file from a template
-  ansible.builtin.template:
-    src: shipping.service.j2
+- name: Create shipping systemd service file
+  ansible.builtin.copy:
+    src: shipping.service
     dest: /etc/systemd/system/shipping.service
-  notify: Restart Shipping Service # This will trigger the handler
 
-# --- Correct, Idempotent Database Schema Management ---
+- name: Load the application schema (creates 'cities' db)
+  ansible.builtin.shell: "mysql -h 172.31.45.195 -uroboshop -pRoboShop@1 < /app/db/schema.sql"
+  changed_when: false
+  ignore_errors: true
 
-- name: Load the initial database schema (creates the 'cities' database and table)
-  # This uses the specific 'shipping' user which has correct remote privileges.
-  # Using the 'mysql_db' module is idempotent. It imports the schema only if the DB is empty.
-  community.mysql.mysql_db:
-    name: "{{ app_db_name }}"
-    state: import
-    target: /app/db/schema.sql
-    login_host: "{{ mysql_host }}"
-    login_user: "{{ app_db_user }}"
-    login_password: "{{ app_db_pass }}"
-  
-- name: Check if 'cities' table needs to be renamed
-  # This task checks if a table named 'cities' exists. The result is stored.
-  community.mysql.mysql_query:
-    login_host: "{{ mysql_host }}"
-    login_user: "{{ app_db_user }}"
-    login_password: "{{ app_db_pass }}"
-    database: "{{ app_db_name }}"
-    query: "SHOW TABLES LIKE 'cities';"
-  register: cities_table_check
-  changed_when: false # This task never changes anything, it only reads.
+- name: Rename the 'cities' table to 'codes' as expected by the application
+  ansible.builtin.shell: "mysql -h 172.31.45.195 -uroboshop -pRoboShop@1 cities -e 'RENAME TABLE cities TO codes;'"
+  ignore_errors: true
+  changed_when: false
 
-- name: Rename 'cities' table to 'codes'
-  # This task ONLY runs if the previous check found the 'cities' table.
-  # On re-runs, the 'cities' table won't exist, so this task will be safely skipped.
-  when: cities_table_check.rowcount | int > 0
-  community.mysql.mysql_query:
-    login_host: "{{ mysql_host }}"
-    login_user: "{{ app_db_user }}"
-    login_password: "{{ app_db_pass }}"
-    database: "{{ app_db_name }}"
-    query: RENAME TABLE cities TO codes;
+- name: Load the master data into the 'cities' database
+  ansible.builtin.shell: "mysql -h 172.31.45.195 -uroboshop -pRoboShop@1 cities < /app/db/master-data.sql"
+  changed_when: false
+  ignore_errors: true
 
-- name: Load master data into the 'codes' table
-  community.mysql.mysql_db:
-    name: "{{ app_db_name }}"
-    state: import
-    target: /app/db/master-data.sql
-    login_host: "{{ mysql_host }}"
-    login_user: "{{ app_db_user }}"
-    login_password: "{{ app_db_pass }}"
-
-- name: Ensure shipping service is started and enabled
-  ansible.builtin.systemd:
-    name: shipping
-    state: started
-    enabled: yes
+- name: reload/restart
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: reload-restart
