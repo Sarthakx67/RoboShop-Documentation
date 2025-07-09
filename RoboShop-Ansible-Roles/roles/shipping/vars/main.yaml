@@ -1,5 +1,5 @@
 vars:
-  db_host: "172.31.39.184"
-  db_name: "cities"
+  db_host: 172.31.39.184
+  db_name: cities
   db_user: "shipping" # It's better to use the specific 'shipping' user here
   db_pass: "RoboShop@1"
