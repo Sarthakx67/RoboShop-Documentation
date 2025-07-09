@@ -1,9 +1,11 @@
 - name: linux configuration
   ansible.builtin.import_role:
+    name: "{{component}}"
     tasks_from: linux-configuration
   
 - name: install nodejs
   ansible.builtin.import_role:
+    name: "{{component}}"
     tasks_from: nodejs.yaml
 
 - name: setup /app
