@@ -6,3 +6,5 @@ ansible_ssh_private_key_file=EC2-key.pem
 mongodb-node ansible_host=172.31.6.228
 [catalogue]
 catalogue-node ansible_host=172.31.15.253
+[user]
+user-node ansible_host=172.31.14.195
