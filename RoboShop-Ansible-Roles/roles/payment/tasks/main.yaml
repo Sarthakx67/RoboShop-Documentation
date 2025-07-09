@@ -1,0 +1,22 @@
+    - name: Install Python 3.6
+      ansible.builtin.command: yum install python36 gcc python3-devel -y
+    
+    - name: app directory setup
+      ansible.builtin.import_role:
+        name: common
+        tasks_from: app-setup
+
+    - name: install dependencies npm
+      ansible.builtin.command: pip3.6 install -r requirements.txt
+      args: 
+        chdir: /app
+
+    - name: copy dependency files
+      ansible.builtin.copy:
+        src: payment.service
+        dest: /etc/systemd/system/payment.service
+
+    - name: start/enable/reload
+      ansible.builtin.import_role:
+        name: common
+        tasks_from: reload-restart
