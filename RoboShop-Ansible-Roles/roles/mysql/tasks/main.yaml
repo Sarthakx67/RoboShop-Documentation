@@ -42,9 +42,9 @@
       ansible.builtin.command: yum module disable mysql -y
       changed_when: false
 
-    - name: copy MySQL 5.7 Server 
+    - name: copy MySQL 5.7 Server
       ansible.builtin.copy:
-        src: mysql.repo
+        src: 13-mysql.repo
         dest: /etc/yum.repos.d/mysql.repo
 
     - name: install mysql
@@ -56,19 +56,20 @@
         state: restarted
         enabled: true
 
-    - name: Find the line containing the temporary root password
-      ansible.builtin.lineinfile:
-        path: /var/log/mysqld.log
-        regexp: 'A temporary password is generated for root@localhost'
-        state: present
-      register: temp_password_line
-      changed_when: false
-      ignore_errors: yes
+    # --- FIX STARTS HERE ---
 
-    - name: Set the new root password using the mysql command-line client
-      when: temp_password_line.found
+    - name: Find the temporary root password using shell and grep # <-- CHANGE: Using the correct tool
+      ansible.builtin.shell: "grep 'A temporary password is generated for root@localhost' /var/log/mysqld.log"
+      register: temp_password_result
+      changed_when: false
+      ignore_errors: true # Important in case the password was already set
+
+    - name: Set the new root password # <-- CHANGE: Logic is now simpler and more robust
+      when: temp_password_result.rc == 0 # <-- CHANGE: Check if the grep command succeeded
       ansible.builtin.shell: >
-        mysql -u root --password='{{ temp_password_line.line | regex_search(': (.*)') | regex_replace(': ', '') }}' --connect-expired-password -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'RoboShop@1';"
+        mysql -u root --password='{{ temp_password_result.stdout.split(": ")[1] }}' --connect-expired-password -e "ALTER USER 'root'@'localhost' IDENTIFIED BY 'RoboShop@1';"
+
+    # --- FIX ENDS HERE ---
 
 - name: Create the 'roboshop' application user for remote access
   community.mysql.mysql_user:
