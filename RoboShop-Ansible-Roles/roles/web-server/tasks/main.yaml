@@ -20,6 +20,11 @@
   ansible.builtin.get_url:
     url: https://roboshop-builds.s3.amazonaws.com/web.zip
     dest: /tmp
+  
+- name: install unzip tool
+  ansible.builtin.yum:
+    name: unzip
+    state: installed
 
 - name: extract catalogue artifact
   ansible.builtin.unarchive:
