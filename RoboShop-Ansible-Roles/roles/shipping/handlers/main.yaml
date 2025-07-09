@@ -1,0 +1,7 @@
+---
+- name: Restart Shipping Service
+  ansible.builtin.systemd:
+    name: shipping
+    state: restarted
+    enabled: yes
+    daemon_reload: yes

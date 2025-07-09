@@ -1,19 +1,25 @@
+---
+# tasks/main.yaml for the 'shipping' role
+
+# Define variables for this role for clarity and reusability.
+# In a real project, these would be in `group_vars` or passed in from an inventory.
+ # The IP of your Cart service
+
 - name: Install prerequisite packages
   ansible.builtin.yum:
     name:
-      - epel-release
       - maven
-      - mysql
+      - mysql-community-client # We only need the client tools here, not the server
       - python3-PyMySQL
     state: present
 
-- name: Create Roboshop application user
+- name: Create Roboshop application user if it does not exist
   ansible.builtin.user:
     name: roboshop
     system: yes
     state: present
 
-- name: Ensure /app directory exists
+- name: Ensure /app directory exists and has correct permissions
   ansible.builtin.file:
     path: /app
     state: directory
@@ -28,40 +34,64 @@
     owner: roboshop
     group: roboshop
 
-- name: Build application with Maven
+- name: Build Java application with Maven
   ansible.builtin.command: mvn clean package
   args:
     chdir: /app
+  # This task will report as "changed" on every run, which is expected for `mvn`.
 
-- name: Load database schema and rename table
-  block:
-    # First, load the initial schema which creates the 'cities' database and table.
-    - name: Load schema from file
-      community.mysql.mysql_db:
-        name: "{{ db_name }}" # Assumes db_name is 'cities' from your vars
-        state: import
-        target: /app/db/schema.sql
-        login_host: "{{ db_host }}"
-        login_user: "{{ db_user }}"
-        login_password: "{{ db_pass }}"
+- name: Deploy the systemd service file from a template
+  ansible.builtin.template:
+    src: shipping.service.j2
+    dest: /etc/systemd/system/shipping.service
+  notify: Restart Shipping Service # This will trigger the handler
 
-    # This is the new, crucial task to rename the table
-    - name: Rename 'cities' table to 'codes'
-      community.mysql.mysql_query:
-        login_host: "{{ db_host }}"
-        login_user: "{{ db_user }}"
-        login_password: "{{ db_pass }}"
-        database: "{{ db_name }}"
-        query: RENAME TABLE cities TO codes
-      # This will fail if the table is already renamed, so we add a check first.
-      when: "'cities' in (lookup('community.mysql.mysql_query', 'SHOW TABLES', database=db_name, login_host=db_host, login_user=db_user, login_password=db_pass) | map(attribute='Tables_in_cities') | list)"
+# --- Correct, Idempotent Database Schema Management ---
 
-    # Finally, load the data into the correctly named 'codes' table.
-    - name: Load master data
-      community.mysql.mysql_db:
-        name: "{{ db_name }}"
-        state: import
-        target: /app/db/master-data.sql
-        login_host: "{{ db_host }}"
-        login_user: "{{ db_user }}"
-        login_password: "{{ db_pass }}"
+- name: Load the initial database schema (creates the 'cities' database and table)
+  # This uses the specific 'shipping' user which has correct remote privileges.
+  # Using the 'mysql_db' module is idempotent. It imports the schema only if the DB is empty.
+  community.mysql.mysql_db:
+    name: "{{ app_db_name }}"
+    state: import
+    target: /app/db/schema.sql
+    login_host: "{{ mysql_host }}"
+    login_user: "{{ app_db_user }}"
+    login_password: "{{ app_db_pass }}"
+  
+- name: Check if 'cities' table needs to be renamed
+  # This task checks if a table named 'cities' exists. The result is stored.
+  community.mysql.mysql_query:
+    login_host: "{{ mysql_host }}"
+    login_user: "{{ app_db_user }}"
+    login_password: "{{ app_db_pass }}"
+    database: "{{ app_db_name }}"
+    query: "SHOW TABLES LIKE 'cities';"
+  register: cities_table_check
+  changed_when: false # This task never changes anything, it only reads.
+
+- name: Rename 'cities' table to 'codes'
+  # This task ONLY runs if the previous check found the 'cities' table.
+  # On re-runs, the 'cities' table won't exist, so this task will be safely skipped.
+  when: cities_table_check.rowcount | int > 0
+  community.mysql.mysql_query:
+    login_host: "{{ mysql_host }}"
+    login_user: "{{ app_db_user }}"
+    login_password: "{{ app_db_pass }}"
+    database: "{{ app_db_name }}"
+    query: RENAME TABLE cities TO codes;
+
+- name: Load master data into the 'codes' table
+  community.mysql.mysql_db:
+    name: "{{ app_db_name }}"
+    state: import
+    target: /app/db/master-data.sql
+    login_host: "{{ mysql_host }}"
+    login_user: "{{ app_db_user }}"
+    login_password: "{{ app_db_pass }}"
+
+- name: Ensure shipping service is started and enabled
+  ansible.builtin.systemd:
+    name: shipping
+    state: started
+    enabled: yes
