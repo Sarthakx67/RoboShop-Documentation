@@ -1,0 +1,25 @@
+- name: configuring linux
+  ansible.builtin.import_roles:
+    tasks_from: linux-configuration
+- name: copy mongodb repo file
+  ansible.builtin.copy:
+    src: mongodb.repo
+    dest: /etc/yum.repos.d/mongo.repo
+- name: install mongodb
+  ansible.builtin.yum: 
+    name: mongodb-org
+    state: installed
+- name: Starting and Enable mongodb server
+  ansible.builtin.service:
+    name: mongod
+    state: started
+    enabled: yes
+- name: enable remote connections to mongodb
+  ansible.builtin.replace:
+    path: /etc/mongod.conf
+    regexp: '127.0.0.1' #text to replace
+    replace: '0.0.0.0'
+- name: restart mongodb
+  ansible.builtin.service:
+    name: mongod
+    state: restarted
