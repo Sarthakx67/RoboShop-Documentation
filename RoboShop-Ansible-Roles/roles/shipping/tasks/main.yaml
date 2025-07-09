@@ -43,9 +43,10 @@
     chdir: /app
 
 - name: Create shipping systemd service file from template
-  ansible.builtin.template: # Use template module to inject variables
-    src: shipping.service.j2
+  ansible.builtin.copy:
+    src: shipping.service
     dest: /etc/systemd/system/shipping.service
+
 
 # --- FIX STARTS HERE: Corrected Database Operations ---
 
