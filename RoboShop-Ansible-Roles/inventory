@@ -15,7 +15,7 @@ cart-node ansible_host=172.31.12.67
 [mysql]
 mysql-node ansible_host=172.31.39.184
 [shipping]
-shipping-node ansible_host=172.31.32.30
+shipping-node ansible_host=172.31.35.159
 [rabbitmq]
 rabbitmq-node ansible_host=172.31.35.133
 [payment]
