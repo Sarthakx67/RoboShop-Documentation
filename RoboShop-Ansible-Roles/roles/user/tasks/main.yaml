@@ -1,0 +1,39 @@
+- name: configuring linux
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: linux-configuration
+
+- name: installing nodejs
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: nodejs
+
+- name: app directory setup
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: app-setup
+
+- name: install dependencies npm
+  ansible.builtin.command: npm install
+  args: 
+    chdir: /app
+
+- name: copy user service
+  ansible.builtin.copy:
+    src: user.service
+    dest: /etc/systemd/system/user.service
+
+- name: reloading and restart {{component}}
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: reload-restart
+
+- name: copy mongodb repo
+  ansible.builtin.copy:
+    src: 01-mongodb.repo
+    dest: /etc/yum.repos.d/mongo.repo
+
+- name: load schema
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: load-schema
