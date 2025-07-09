@@ -1,8 +1,11 @@
+- name: Temporarily set SELinux to permissive mode
+  ansible.builtin.command: setenforce 0
+
 - name: install nginx
   ansible.builtin.yum:
     name: nginx
     state: installed
-- name: start and enable nginx
+- name: start/enable nginx
   ansible.builtin.service:
     name: nginx
     state: started
@@ -16,17 +19,17 @@
     path: /usr/share/nginx/html
     state: directory
 
-- name: download web artifact
+- name: Download web artifact
   ansible.builtin.get_url:
     url: https://roboshop-builds.s3.amazonaws.com/web.zip
     dest: /tmp
-  
+
 - name: install unzip tool
   ansible.builtin.yum:
     name: unzip
     state: installed
 
-- name: extract catalogue artifact
+- name: unzip web artifact
   ansible.builtin.unarchive:
     src: /tmp/web.zip
     dest: /usr/share/nginx/html
