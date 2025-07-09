@@ -1,0 +1,6 @@
+vars:
+  mysql_host: "172.31.39.184" # Change this if your MySQL IP changes
+  app_db_name: "cities"
+  app_db_user: "shipping" # The application user for MySQL
+  app_db_pass: "RoboShop@1"
+  cart_host_ip: "172.31.12.67" # The IP of your Cart service
