@@ -42,18 +42,18 @@
     dest: /etc/systemd/system/shipping.service
 
 - name: Load the application schema (creates 'cities' db)
-  ansible.builtin.shell: "mysql -h 172.31.39.184 -uroboshop -pRoboShop@1 < /app/db/schema.sql"
+  ansible.builtin.shell: "mysql -h 172.31.39.184 -uroot -pRoboShop@1 < /app/db/schema.sql"
   changed_when: false
   ignore_errors: true
 
 - name: Rename the 'cities' table to 'codes' as expected by the application
-  ansible.builtin.shell: "mysql -h 172.31.39.184 -uroboshop -pRoboShop@1 cities -e 'RENAME TABLE cities TO codes;'"
+  ansible.builtin.shell: "mysql -h 172.31.39.184 -uroot -pRoboShop@1 cities -e 'RENAME TABLE cities TO codes;'"
   ignore_errors: true
   changed_when: false
 
 - name: Load the master data into the 'codes' database
   # This populates the 'codes' table with the required shipping options.
-  ansible.builtin.shell: "mysql -h 172.31.39.184 -uroboshop -pRoboShop@1 codes < /app/db/master-data.sql"
+  ansible.builtin.shell: "mysql -h 172.31.39.184 -uroot -pRoboShop@1 codes < /app/db/master-data.sql"
   changed_when: false
   ignore_errors: true
 
