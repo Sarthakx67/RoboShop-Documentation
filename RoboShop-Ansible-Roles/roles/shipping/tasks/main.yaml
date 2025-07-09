@@ -51,9 +51,9 @@
   ignore_errors: true
   changed_when: false
 
-- name: Load the master data into the 'cities' database
+- name: Load the master data into the 'codes' database
   # This populates the 'codes' table with the required shipping options.
-  ansible.builtin.shell: "mysql -h {{ mysql_host }} -uroboshop -pRoboShop@1 cities < /app/db/master-data.sql"
+  ansible.builtin.shell: "mysql -h {{ mysql_host }} -uroboshop -pRoboShop@1 codes < /app/db/master-data.sql"
   changed_when: false
   ignore_errors: true
 
