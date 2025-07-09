@@ -1,5 +1,5 @@
 - name: configuring linux
-  ansible.builtin.import_roles:
+  ansible.builtin.import_role:
     tasks_from: linux-configuration
 - name: copy mongodb repo file
   ansible.builtin.copy:
