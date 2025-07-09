@@ -18,3 +18,5 @@ mysql-node ansible_host=172.31.39.184
 shipping-node ansible_host=172.31.32.30
 [rabbitmq]
 rabbitmq-node ansible_host=172.31.35.133
+[payment]
+payment-node ansible_host=172.31.38.231 
