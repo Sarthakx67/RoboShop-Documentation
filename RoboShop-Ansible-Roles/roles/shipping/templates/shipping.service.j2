@@ -1,0 +1,13 @@
+[Unit]
+Description=Shipping Service
+
+[Service]
+User=roboshop
+Environment="CART_ENDPOINT={{ groups['cart'][0] }}:8080"
+Environment="DB_HOST={{ mysql_host }}"
+Environment="DB_USER={{ mysql_app_user }}"
+Environment="DB_PASS={{ mysql_app_pass }}"
+ExecStart=/usr/bin/java -jar /app/target/shipping-1.0.jar
+
+[Install]
+WantedBy=multi-user.target

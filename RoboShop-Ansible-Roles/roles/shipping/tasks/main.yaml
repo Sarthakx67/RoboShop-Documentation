@@ -1,3 +1,7 @@
+# tasks/main.yaml for shipping role
+
+# Use variables for database connection to make the role reusable
+
 - name: Install prerequisite packages
   ansible.builtin.yum:
     name:
@@ -19,10 +23,12 @@
     state: directory
     owner: roboshop
     group: roboshop
+
 - name: install unzip
   ansible.builtin.yum:
     name: unzip
-    state: installed
+    state: present
+    
 - name: Download and unpack shipping artifact
   ansible.builtin.unarchive:
     src: https://roboshop-builds.s3.amazonaws.com/shipping.zip
@@ -36,28 +42,40 @@
   args:
     chdir: /app
 
-- name: Create shipping systemd service file
-  ansible.builtin.copy:
-    src: shipping.service
+- name: Create shipping systemd service file from template
+  ansible.builtin.template: # Use template module to inject variables
+    src: shipping.service.j2
     dest: /etc/systemd/system/shipping.service
 
-- name: Load the application schema (creates 'cities' db)
-  ansible.builtin.shell: "mysql -h 172.31.39.184 -uroot -pRoboShop@1 < /app/db/schema.sql"
-  changed_when: false
-  ignore_errors: true
+# --- FIX STARTS HERE: Corrected Database Operations ---
 
-- name: Rename the 'cities' table to 'codes' as expected by the application
-  ansible.builtin.shell: "mysql -h 172.31.39.184 -uroot -pRoboShop@1 cities -e 'RENAME TABLE cities TO codes;'"
-  ignore_errors: true
-  changed_when: false
+- name: Load the application schema (creates '{{ db_name }}' db and table)
+  # This task runs a SQL script. We use the 'shipping' user, not 'root'.
+  ansible.builtin.shell: "mysql -h {{ mysql_host }} -u{{ mysql_app_user }} -p{{ mysql_app_pass }} < /app/db/schema.sql"
+  # This command is not idempotent by default, so we expect it to change state
+  changed_when: true 
 
-- name: Load the master data into the 'codes' database
-  # This populates the 'codes' table with the required shipping options.
-  ansible.builtin.shell: "mysql -h 172.31.39.184 -uroot -pRoboShop@1 codes < /app/db/master-data.sql"
+- name: Check if the table 'cities' exists and 'codes' does not
+  ansible.builtin.shell: "mysql -h {{ mysql_host }} -u{{ mysql_app_user }} -p{{ mysql_app_pass }} -D {{ db_name }} -e 'SHOW TABLES;' | grep '^cities$'"
+  register: cities_table_check
   changed_when: false
-  ignore_errors: true
+  ignore_errors: true # Ignore errors if 'cities' doesn't exist (it may have been renamed already)
 
-- name: reload-restart
+- name: Rename the 'cities' table to 'codes'
+  # Only run this if the 'cities' table was found in the previous step
+  when: cities_table_check.rc == 0
+  ansible.builtin.shell: "mysql -h {{ mysql_host }} -u{{ mysql_app_user }} -p{{ mysql_app_pass }} -D {{ db_name }} -e 'RENAME TABLE cities TO codes;'"
+
+- name: Load the master data into the 'codes' table
+  # Now we load data into the correctly named table 'codes'.
+  # Note: This assumes master-data.sql loads into the table 'codes' or we rename the table first.
+  ansible.builtin.shell: "mysql -h {{ mysql_host }} -u{{ mysql_app_user }} -p{{ mysql_app_pass }} -D {{ db_name }} < /app/db/master-data.sql"
+  changed_when: true
+  
+# --- FIX ENDS HERE ---
+
+- name: Start and enable the shipping service
   ansible.builtin.import_role:
     name: common
-    tasks_from: reload-restart
+    tasks_from: reload-restart.yaml # Assuming the task file is reload-restart.yaml```
+

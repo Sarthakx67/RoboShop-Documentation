@@ -1,0 +1,5 @@
+vars:
+  mysql_host: "172.31.39.184" # Or better, use an Ansible variable like {{ groups['mysql'][0] }}
+  mysql_app_user: "roboshop"
+  mysql_app_pass: "RoboShop@1"
+  db_name: "cities"
