@@ -1,0 +1,31 @@
+- name: configuring linux
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: linux-configuration
+
+- name: install nodejs
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: nodejs
+
+- name: /app directory setup
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: app-setup
+
+- name: install dependencies npm
+  ansible.builtin.command: npm ci
+  #The npm ci  performs a clean install strictly based on the package-lock.json file,
+  #ensuring you get the correct versions.
+  args: 
+    chdir: /app
+
+- name: copy cart.service
+  ansible.builtin.copy:
+    src: cart.service
+    dest: /etc/systemd/system/cart.service
+
+- name: relaod/restart service
+  ansible.builtin.import_role:
+    name: common  
+    tasks_from: reload-restart
