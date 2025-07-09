@@ -1,4 +1,4 @@
-- name: configuring {{component}} 
+- name: configuring 
   hosts: "{{component}}"
   become: yes
   roles:
