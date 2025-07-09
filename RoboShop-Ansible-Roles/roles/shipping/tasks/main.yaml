@@ -35,23 +35,8 @@
 
 - name: Create shipping systemd service file
   ansible.builtin.copy:
+    src: shipping.service
     dest: /etc/systemd/system/shipping.service
-    content: |
-      [Unit]
-      Description=Shipping Service
-
-      [Service]
-      User=roboshop
-      Environment="CART_ENDPOINT={{ cart_host }}:8080"
-      Environment="DB_HOST={{ mysql_host }}"
-      Environment="DB_USER=shipping"
-      Environment="DB_PASS=RoboShop@1"
-      ExecStart=/usr/bin/java -jar /app/target/shipping-1.0.jar
-      SyslogIdentifier=shipping
-
-      [Install]
-      WantedBy=multi-user.target
-  notify: Reload and restart shipping
 
 - name: Load the application schema (creates 'cities' db)
   ansible.builtin.shell: "mysql -h {{ mysql_host }} -uroboshop -pRoboShop@1 < /app/db/schema.sql"
