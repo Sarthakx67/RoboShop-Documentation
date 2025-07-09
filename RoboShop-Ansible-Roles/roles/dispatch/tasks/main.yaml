@@ -1,0 +1,44 @@
+- name: install goLang
+  ansible.builtin.yum:
+    name: golang
+    state: installed
+
+- name: app directory setup
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: app-setup
+
+- name: go lang init 
+  ansible.builtin.command: go mod init dispatch
+  args: 
+    chdir: /app
+  ignore_errors: yes
+
+- name: go lang get
+  ansible.builtin.command: go get
+  args: 
+    chdir: /app
+  ignore_errors: yes
+
+- name: go lang build 
+  ansible.builtin.command: go build
+  args: 
+    chdir: /app
+  ignore_errors: yes
+
+- name: Set ownership of /app directory to the roboshop user
+  ansible.builtin.file:
+    path: /app
+    owner: roboshop
+    group: roboshop
+    recurse: yes # Makeing sure to apply ownership to all files inside
+
+- name: copy dependency files
+  ansible.builtin.copy:
+    src: dispatch.service
+    dest: /etc/systemd/system/dispatch.service
+
+- name: start/daemon-reload
+  ansible.builtin.import_role:
+    name: common
+    tasks_from: reload-restart

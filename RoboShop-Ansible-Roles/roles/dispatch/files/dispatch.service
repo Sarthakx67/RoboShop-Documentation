@@ -1,0 +1,13 @@
+[Unit]
+Description = Dispatch Service
+[Service]
+User=roboshop
+WorkingDirectory=/app
+Environment=AMQP_HOST=172.31.35.133
+Environment=AMQP_USER=roboshop
+Environment=AMQP_PASS=roboshop123
+ExecStart=/bin/bash -c /app/dispatch
+SyslogIdentifier=dispatch
+
+[Install]
+WantedBy=multi-user.target
