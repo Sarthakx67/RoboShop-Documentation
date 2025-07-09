@@ -1,0 +1,32 @@
+- name: linux configuration
+  ansible.builtin.import_role:
+    tasks_from: linux-configuration
+  
+- name: install nodejs
+  ansible.builtin.import_role:
+    tasks_from: nodejs.yaml
+
+- name: setup /app
+  ansible.builtin.import_role:
+    name: "{{component}}"
+    tasks_from: app-setup
+
+- name: install dependencies
+  ansible.builtin.command: npm install
+  args:
+    chdir: /app  
+
+- name: copy {{component}} service
+  ansible.builtin.copy:
+    src: catalogue.service
+    dest: /etc/systemd/system/catalogue.service
+
+- name: load schema in mongodb
+  ansible.builtin.import_role:
+    name: "{{component}}"
+    tasks_from: load-schema
+
+- name: reload and restart services 
+  ansible.builtin.import_role:
+    name: "{{component}}"
+    tasks_from: reload-restart

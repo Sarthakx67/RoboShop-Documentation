@@ -1,0 +1,13 @@
+- name: copy mongodb repo file
+  ansible.builtin.copy:
+    src: mongodb.repo
+    dest: /etc/yum.repos.d/mongo.repo
+
+- name: install mondodb-org-shell client package
+  ansible.builtin.yum:
+    name: mongodb-org-shell
+    state: installed 
+
+- name: load {{component}} data
+  ansible.builtin.command: mongo --host 172.31.6.228 < /app/schema/{{component}}.js
+  ignore_errors: yes

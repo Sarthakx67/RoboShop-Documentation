@@ -1,0 +1,37 @@
+- name: check Roboshop user exist or not
+  ansible.builtin.command: id roboshop
+  register: output #output is variable name
+  ignore_errors: true
+
+- when: output.rc != 0
+  name: Create user roboshop
+  ansible.builtin.user:
+    name: roboshop
+
+# ansible.builtin.stat is used to retrieve_file/file_system status information
+- name: check /app directory exist or not
+  ansible.builtin.stat:
+    path: /app
+  register: directory
+
+- name: create /app directory
+  ansible.builtin.file:
+    path: /app
+    state: directory
+  when: directory.stat.exists == false
+  
+- name: Download {{component}} artifact
+  ansible.builtin.get_url:
+    url: https://roboshop-builds.s3.amazonaws.com/{{component}}.zip
+    dest: /tmp
+
+- name: install unzip tool
+  ansible.builtin.yum:
+    name: unzip
+    state: installed
+
+- name: unzip {{component}} artifact
+  ansible.builtin.unarchive:
+    src: /tmp/{{component}}.zip
+    dest: /app
+    remote_src: yes
