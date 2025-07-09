@@ -5,7 +5,7 @@
       User=roboshop
       Environment="CART_ENDPOINT=172.31.12.67:8080"
       Environment="DB_HOST=172.31.39.184"
-      Environment="DB_USER=shipping"
+      Environment="DB_USER=roboshop"
       Environment="DB_PASS=RoboShop@1"
       ExecStart=/usr/bin/java -jar /app/target/shipping-1.0.jar
       SyslogIdentifier=shipping

@@ -1,5 +1,5 @@
 vars:
-  mysql_host: "172.31.39.184" # Or better, use an Ansible variable like {{ groups['mysql'][0] }}
-  mysql_app_user: "roboshop"
-  mysql_app_pass: "RoboShop@1"
+  db_host: "172.31.39.184"
   db_name: "cities"
+  db_user: "shipping" # It's better to use the specific 'shipping' user here
+  db_pass: "RoboShop@1"
