@@ -44,7 +44,7 @@
 
     - name: copy MySQL 5.7 Server
       ansible.builtin.copy:
-        src: 13-mysql.repo
+        src: mysql.repo
         dest: /etc/yum.repos.d/mysql.repo
 
     - name: install mysql
