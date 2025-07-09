@@ -28,11 +28,6 @@
     name: common
     tasks_from: reload-restart
 
-- name: copy mongodb repo
-  ansible.builtin.copy:
-    src: 01-mongodb.repo
-    dest: /etc/yum.repos.d/mongo.repo
-
 - name: load schema
   ansible.builtin.import_role:
     name: common
