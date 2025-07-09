@@ -10,7 +10,7 @@
 
 - name: setup /app
   ansible.builtin.import_role:
-    name: "{{component}}"
+    name: common
     tasks_from: app-setup
 
 - name: install dependencies
@@ -25,10 +25,10 @@
 
 - name: load schema in mongodb
   ansible.builtin.import_role:
-    name: "{{component}}"
+    name: common
     tasks_from: load-schema
 
 - name: reload and restart services 
   ansible.builtin.import_role:
-    name: "{{component}}"
+    name: common
     tasks_from: reload-restart
