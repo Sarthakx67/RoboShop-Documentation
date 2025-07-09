@@ -19,7 +19,10 @@
     state: directory
     owner: roboshop
     group: roboshop
-
+- name: install unzip
+  ansible.builtin.yum:
+    name: unzip
+    state: installed
 - name: Download and unpack shipping artifact
   ansible.builtin.unarchive:
     src: https://roboshop-builds.s3.amazonaws.com/shipping.zip
