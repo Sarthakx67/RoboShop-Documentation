@@ -23,9 +23,6 @@ The application is deployed using a secure, three-tier architecture that separat
 
 ---
 
-![RoboShop Live Demo](./assets/RoboShop-Deployment.gif)
-
----
 ## Repository Contents
 
 This repository is structured into three primary directories, each offering a complete and standalone method for deploying the application.
@@ -61,3 +58,8 @@ This repository is structured into three primary directories, each offering a co
 
 ## About This Project
 This repository is a portfolio piece designed to showcase hands-on proficiency in cloud deployment and automation. It demonstrates a clear progression from manual, procedural tasks to fully declarative, production-ready configuration management.
+
+---
+
+![RoboShop Live Demo](./assets/RoboShop-Deployment.gif)
+
